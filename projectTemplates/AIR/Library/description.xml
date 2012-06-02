@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:projectTemplate xmlns:tns="http://fdt.powerflasher.com/ProjectTemplate"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://fdt.powerflasher.com/ProjectTemplate ../../projectTemplate.xsd">
+	<name>Library</name>
+	<version>2.5</version>
+	<description>Creates an empty library project.</description>
+	<projectType>${projectType}</projectType>
+	<variables>
+		<primaryGroup label="">	
+		
+			<group label="Project Setup">
+				<variable name="selectedSDK" label="Default SDK"
+						default="_highest" type="sdk(4.5,4.9,2.6,4)" />												
+				<variable name="useFlex" label="Add Flex Framework"
+					default="false" type="boolean" />				
+			</group>
+		</primaryGroup>				
+	</variables>
+	<extensions>
+		<mobile>
+              <setProperty platform="${targetPlatform}" name="ACTIVE" value="true"/>
+		      <setDescriptorProperty platform="${targetPlatform}" name="APPNAME" value= "${appName}"/>
+		      <setDescriptorProperty platform="${targetPlatform}" name="APPID" value= "${appId}"/>
+		      <setDescriptorProperty platform="${targetPlatform}" name="APPFILENAME" value= "${fileName}"/>
+		      <setDescriptorProperty platform="${targetPlatform}" name="APPVERSION" value= "${appVersion}"/>
+		</mobile>		
+	</extensions>	
+	<expressions>
+		<!--Blackberry error check-->		
+		<expression name="missingSDKWarning">This template requires the Flex 4.5 SDK or later.</expression>
+		<expression name="hasMinimumSDK" value="sdkVersionExists('4.5','4.9')"/>
+		<expression name="templateError" value="if(!${hasMinimumSDK},${missingSDKWarning},'')"/>
+		<expression name="targetPlatform" value="'AirDesktop'" />	
+		<expression name="projectType" value="if(${useFlex},'AIR Mobile Flex','AIR Mobile')" />
+		<expression name="postFileName" value="replaceRegex(${projectName}, '([^\w]+)', '')" />
+		<expression name="fileName" value="replaceRegex(${postFileName}, '(^\d+)', '')" />
+		<expression name="packageStructure" value="replaceRegex(${appId}, '([.]+)', '/')" />		
+		<expression name="sourceFolder" value="src" />		
+		<expression name="outputFolder" value="bin" />				
+	</expressions>
+	<folders>
+		<sourceFolder>${sourceFolder}</sourceFolder>
+		<outputFolder>${outputFolder}</outputFolder>
+	</folders>
+
+</tns:projectTemplate>
+
